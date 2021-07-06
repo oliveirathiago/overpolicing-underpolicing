@@ -1,0 +1,58 @@
+TITLE:
+	Longitudinal mediation OVP UND LEG VIO;
+
+DATA:
+	FILE = "~/Dropbox/mplus_data/mediation_data.dat" ;
+
+VARIABLE:
+	NAMES = 	quest
+		ovp1 und1 leg1 vio1
+		ovp2 und2 leg2 vio2
+		ovp3 und3 leg3 vio3 ;
+		
+	Idvariable = quest ;
+	
+	Missing = . ;
+	
+	Usevariables =	all ;
+	
+	Count =	vio1 (nb)
+		vio2 (nb)
+		vio3 (nb) ;
+	
+ANALYSIS:
+	Estimator = MLR ;
+	Integration = Montecarlo ;
+
+MODEL:
+
+	vio3 ON vio2 (AR1)
+		leg2 (CL1) 
+		ovp1  
+		und1 ;
+		
+	vio2 ON vio1 (AR1)
+		leg1 (CL1) ;
+	
+	leg3 ON leg2 (AR2)
+		ovp2 (CL2) 
+		und2 (CL3) ;
+		
+	leg2 ON leg1 (AR2)
+		ovp1 (CL2) 
+		und1 (CL3) ;
+	
+
+	ovp3 ON ovp2 (AR3) ;
+	ovp2 ON ovp1 (AR3) ;
+	
+	und3 ON und2 (AR4) ;
+	und2 ON und1 (AR4) ;
+	
+	
+	Model Constraint: 
+		New (indovp indund); 
+			
+		indovp = CL2 * CL1 ; 
+		indund = CL3 * CL1 ;
+	

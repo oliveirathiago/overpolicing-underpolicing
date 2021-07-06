@@ -1,0 +1,65 @@
+TITLE: RI-CLPM
+
+DATA: FILE = "~/Dropbox/mplus_data/mplusdata190620.dat" ;
+
+VARIABLE: 	NAMES = 	idwide 
+			und1_1 und2_1 und3_1 law1_1 
+			und1_2 und2_2 und3_2 law1_2 
+			und1_3 und2_3 und3_3 law1_3 
+			ovp1_1 ovp2_1 
+			ovp1_2 ovp2_2 
+			ovp1_3 ovp2_3 
+			gunall_1 gunall_2 gunall_3 
+			area1 area2 area3 area4 area5 area6 area7 area8 
+			white male class 
+			law3_1 law5_1 law3_2 law5_2 law3_3 law5_3 
+			napol1_1 napol2_1 napol1_2 napol2_2 napol1_3 napol2_3 
+			lawcons_1 lawcons_2 lawcons_3 polcons_1 polcons_2 polcons_3
+			pj1_1 pj2_1 pj3_1 pj4_1 
+			pj1_2 pj2_2 pj3_2 pj4_2 
+			pj1_3 pj2_3 pj3_3 pj4_3 
+			eff1_1 eff2_1 eff3_1 eff4_1 eff5_1 eff6_1 
+			eff1_2 eff2_2 eff3_2 eff4_2 eff5_2 eff6_2
+			eff1_3 eff2_3 eff3_3 eff4_3 eff5_3 eff6_3 ;
+
+		MISSING = . ;
+		
+		Usevariables =	und1_1-area1
+				area3-class ;
+		
+		Categorical = und1_1-ovp2_3 ;
+		
+		Idvariable = idwide ;
+		
+MODEL:
+	und1 BY und1_1* und2_1 und3_1 law1_1 (A1-A4) ;
+	und2 BY und1_2* und2_2 und3_2 law1_2 (A1-A4) ;
+	und3 BY und1_3* und2_3 und3_3 law1_3 (A1-A4) ;
+	
+	ovp1 BY ovp1_1* ovp2_1 (B1 B2) ;
+	ovp2 BY ovp1_2* ovp2_2 (B1 B2) ;
+	ovp3 BY ovp1_3* ovp2_3 (B1 B2) ;
+	
+	und1-ovp3@1 ;
+	
+	und3 ON  und2 (C1)
+	         ovp2 (D1) 
+	         gunall_3 ;!(G1);
+	
+	und2 ON und1 (C1)
+	        ovp1 (D1) 
+	        gunall_2 ;!(G1);
+	        
+	und1 ON  gunall_1 !(G1) 
+		white male class area1 area3 area4 area5 area6 area7 area8 ;
+	
+	ovp3 ON  ovp2 (E1)
+		und2 (F1) 
+		gunall_3 ;!(H1) ;
+		
+	ovp2 ON  ovp1 (E1) 
+		und1 (F1) 
+		gunall_2 ;!(H1);
+		
+	ovp1 ON  gunall_1 !(H1)
+		white male class area1 area3 area4 area5 area6 area7 area8 ;

@@ -1,0 +1,38 @@
+TITLE:
+	Coercive-consensual continuum -- long IRT ;
+DATA:
+	FILE = "~/Dropbox/mplus_data/continuum.dat" ;
+
+VARIABLE:
+	NAMES = newid 
+			napol1 
+			napol2 
+			feargen 
+			fearper
+			toppol ;
+			
+	Missing = . ;
+	
+	Usevariables = napol1 feargen toppol ;
+	
+	Categorical = napol1 feargen ;
+	
+	Nominal = toppol ;
+	
+	Idvariable = newid ;
+	
+ANALYSIS:
+	Estimator = MLR ;
+	!Starts = 20 10 ;
+
+MODEL:
+
+	cont BY napol1* feargen toppol#1 toppol#2 toppol#3 ;
+	cont@1 ;
+	
+OUTPUT:
+Std ;
+
+SAVEDATA:
+	File = "~/Dropbox/mplus_data/irt/continuum_long.txt" ;
+	Save = Fscores ;

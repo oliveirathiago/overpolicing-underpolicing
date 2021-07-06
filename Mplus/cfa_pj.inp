@@ -1,0 +1,50 @@
+TITLE:
+	CFA - pj
+
+DATA:
+	FILE = "~/Dropbox/mplus_data/data_to_mplus_cynicism.dat" ;
+
+VARIABLE:
+	NAMES = 		idwide
+			ovp1_1 ovp2_1 und1_1 und2_1 
+			law1_1 law3_1 law5_1 djpol_1 napol1_1 napol2_1 vio_1
+			pj1_1 pj2_1 pj3_1 pj4_1
+			eff1_1 eff2_1 eff3_1 eff4_1 eff5_1 eff6_1
+     			ovp1_2 ovp2_2 und1_2 und2_2 
+     			law1_2 law3_2 law5_2 djpol_2 napol1_2 napol2_2 vio_2
+     			pj1_2 pj2_2 pj3_2 pj4_2
+			eff1_2 eff2_2 eff3_2 eff4_2 eff5_2 eff6_2
+     			ovp1_3 ovp2_3 und1_3 und2_3 law3_3 
+     			law1_3 law5_3 djpol_3 napol1_3 napol2_3 vio_3
+     			pj1_3 pj2_3 pj3_3 pj4_3
+			eff1_3 eff2_3 eff3_3 eff4_3 eff5_3 eff6_3;
+     			
+     Missing = . ;
+     
+     Usevariables = 	pj1_1 pj2_1 pj3_1 pj4_1 
+			pj1_2 pj2_2 pj3_2 pj4_2
+     			pj1_3 pj2_3 pj3_3 pj4_3;
+     
+     Categorical = all ;
+     
+     IDvariable = idwide ;
+     			
+ANALYSIS:
+	Estimator = MLR ;
+	
+MODEL:
+	pj1 BY pj1_1* pj2_1 pj3_1 pj4_1 (A1-A4) ;
+	pj1@1 ;
+	
+	pj2 BY pj1_2* pj2_2 pj3_2 pj4_2 (A1-A4) ;
+	pj2@1 ;
+	
+	pj3 BY pj1_3* pj2_3 pj3_3 pj4_3 (A1-A4) ;
+	pj3@1 ;
+	
+OUTPUT:
+Std ;
+
+SAVEDATA:
+	File = "~/Dropbox/mplus_data/irt/pjscores.txt" ;
+	Save = Fscores ;
